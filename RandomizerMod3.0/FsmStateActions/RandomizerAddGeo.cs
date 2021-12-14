@@ -1,5 +1,4 @@
 ﻿using HutongGames.PlayMaker;
-using SereCore;
 using UnityEngine;
 using Random = System.Random;
 

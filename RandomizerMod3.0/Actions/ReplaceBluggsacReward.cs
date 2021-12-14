@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HutongGames.PlayMaker;
-using SereCore;
-using UnityEngine;
+﻿using HutongGames.PlayMaker;
+using RandomizerMod.Extensions;
 using RandomizerMod.FsmStateActions;
+using UnityEngine;
 
 namespace RandomizerMod.Actions
 {
@@ -22,7 +18,7 @@ namespace RandomizerMod.Actions
 
         public override ActionType Type => ActionType.PlayMakerFSM;
 
-        public override void Process(string scene, UnityEngine.Object changeObj)
+        public override void Process(string scene, Object changeObj)
         {
             if (!(scene == _sceneName && changeObj is PlayMakerFSM fsm && fsm.FsmName == "Control" && fsm.gameObject.name.StartsWith("Corpse Egg Sac")))
             {

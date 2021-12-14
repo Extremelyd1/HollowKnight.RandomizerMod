@@ -1,29 +1,24 @@
 ﻿using System;
-using System.IO;
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Threading;
 using Modding;
 using RandomizerMod.Actions;
+using RandomizerMod.Extensions;
+using RandomizerMod.MultiWorld;
 using RandomizerMod.Randomization;
-using SereCore;
+using RandomizerMod.SceneChanges;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using HutongGames.PlayMaker;
-using RandomizerMod.FsmStateActions;
-using static RandomizerMod.LogHelper;
 using static RandomizerMod.GiveItemActions;
-using RandomizerMod.SceneChanges;
-using System.Security.Cryptography;
-
 using Object = UnityEngine.Object;
-using RandomizerMod.MultiWorld;
 
 namespace RandomizerMod
 {
-    public class RandomizerMod : Mod, IMultiWorldCompatibleRandomizer
+    public class RandomizerMod : Mod, IGlobalSettings<GlobalSettings>, ILocalSettings<SaveSettings>, IMultiWorldCompatibleRandomizer
     {
         private static Dictionary<string, Sprite> _sprites;
         private static Dictionary<string, string> _secondaryBools;
@@ -32,19 +27,27 @@ namespace RandomizerMod
 
         public static RandomizerMod Instance { get; private set; }
 
-        public GlobalSettings globalSettings { get; set; } = new GlobalSettings();
+        public GlobalSettings _globalSettings { get; set; } = new GlobalSettings();
         public SaveSettings Settings { get; set; } = new SaveSettings();
 
-        public override ModSettings SaveSettings
+        public void OnLoadGlobal(GlobalSettings globalSettings) 
         {
-            get => Settings = Settings ?? new SaveSettings();
-            set => Settings = value is SaveSettings saveSettings ? saveSettings : Settings;
+            _globalSettings = globalSettings;
         }
 
-        public override ModSettings GlobalSettings
+        public GlobalSettings OnSaveGlobal() 
         {
-            get => globalSettings = globalSettings ?? new GlobalSettings();
-            set => globalSettings = value is GlobalSettings gSettings ? gSettings : globalSettings;
+            return _globalSettings;
+        }
+
+        public void OnLoadLocal(SaveSettings saveSettings)
+        {
+            Settings = saveSettings;
+        }
+
+        public SaveSettings OnSaveLocal()
+        {
+            return Settings;
         }
 
         public override void Initialize(Dictionary<string, Dictionary<string, GameObject>> preloaded)
@@ -121,10 +124,10 @@ namespace RandomizerMod
                 (SceneNames.Deepnest_36, "Grub Bottle"),
                 (SceneNames.Deepnest_36, "Grub Mimic Bottle"),
                 (SceneNames.Deepnest_36, "Grub Mimic Top"),
-                (SceneNames.Deepnest_36, "Dream Dialogue"),
+                (SceneNames.Deepnest_36, "Grub Bottle/Bottle Physical/Dream Dialogue"),
                 (SceneNames.Deepnest_36, "d_break_0047_deep_lamp2/lamp_bug_escape (7)")
             };
-            if (!globalSettings.ReduceRockPreloads)
+            if (!_globalSettings.ReduceRockPreloads)
             {
                 preloads.AddRange(new List<(string, string)>
                 {
@@ -144,7 +147,7 @@ namespace RandomizerMod
                 });
             }
 
-            if (!globalSettings.ReduceTotemPreloads)
+            if (!_globalSettings.ReduceTotemPreloads)
             {
                 preloads.AddRange(new List<(string, string)>
                 {   
@@ -164,10 +167,10 @@ namespace RandomizerMod
         public void HookRandomizer()
         {
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged += HandleSceneChanges;
-            ModHooks.Instance.LanguageGetHook += LanguageStringManager.GetLanguageString;
-            ModHooks.Instance.GetPlayerIntHook += IntOverride;
-            ModHooks.Instance.GetPlayerBoolHook += BoolGetOverride;
-            ModHooks.Instance.SetPlayerBoolHook += BoolSetOverride;
+            ModHooks.LanguageGetHook += LanguageStringManager.GetLanguageString;
+            ModHooks.GetPlayerIntHook += IntOverride;
+            ModHooks.GetPlayerBoolHook += BoolGetOverride;
+            ModHooks.SetPlayerBoolHook += BoolSetOverride;
             On.PlayMakerFSM.OnEnable += FixVoidHeart;
             On.PlayMakerFSM.OnEnable += HookFury;
             On.HeroController.MaxHealth += EnableFuryOnBench;
@@ -187,10 +190,10 @@ namespace RandomizerMod
         public void UnhookRandomizer()
         {
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= HandleSceneChanges;
-            ModHooks.Instance.LanguageGetHook -= LanguageStringManager.GetLanguageString;
-            ModHooks.Instance.GetPlayerIntHook -= IntOverride;
-            ModHooks.Instance.GetPlayerBoolHook -= BoolGetOverride;
-            ModHooks.Instance.SetPlayerBoolHook -= BoolSetOverride;
+            ModHooks.LanguageGetHook -= LanguageStringManager.GetLanguageString;
+            ModHooks.GetPlayerIntHook -= IntOverride;
+            ModHooks.GetPlayerBoolHook -= BoolGetOverride;
+            ModHooks.SetPlayerBoolHook -= BoolSetOverride;
             On.PlayMakerFSM.OnEnable -= FixVoidHeart;
             On.PlayMakerFSM.OnEnable -= HookFury;
             On.HeroController.MaxHealth -= EnableFuryOnBench;
@@ -342,7 +345,7 @@ namespace RandomizerMod
 
             int minAPI = 53;
 
-            bool apiTooLow = Convert.ToInt32(ModHooks.Instance.ModVersion.Split('-')[1]) < minAPI;
+            bool apiTooLow = Convert.ToInt32(ModHooks.ModVersion.Split('-')[1]) < minAPI;
             if (apiTooLow)
             {
                 return ver + " (Update API)";
@@ -353,19 +356,19 @@ namespace RandomizerMod
 
         private void RandomizerCompletion(On.PlayerData.orig_CountGameCompletion orig, PlayerData self)
         {
-            if (!RandomizerMod.Instance.Settings.Randomizer)
+            if (!Instance.Settings.Randomizer)
             {
                 orig(self);
                 return;
             }
 
-            float placedItems = (float)RandomizerMod.Instance.Settings.GetNumLocations();
-            float foundItems = (float)RandomizerMod.Instance.Settings.NumItemsFound;
+            float placedItems = (float)Instance.Settings.GetNumLocations();
+            float foundItems = (float)Instance.Settings.NumItemsFound;
 
             // Count a pair (in, out) as a single transition check
-            float randomizedTransitions = RandomizerMod.Instance.Settings.RandomizeRooms ? 445f :
-                                            RandomizerMod.Instance.Settings.RandomizeAreas ? 80f : 0f;
-            float foundTransitions = (float)RandomizerMod.Instance.Settings.GetTransitionsFound().Length / 2f;
+            float randomizedTransitions = Instance.Settings.RandomizeRooms ? 445f :
+                                            Instance.Settings.RandomizeAreas ? 80f : 0f;
+            float foundTransitions = (float)Instance.Settings.GetTransitionsFound().Length / 2f;
             if (placedItems == 0 && randomizedTransitions == 0)
             {
                 PlayerData.instance.completionPercentage = 0;
@@ -420,7 +423,7 @@ namespace RandomizerMod
             }
         }
 
-        private bool BoolGetOverride(string boolName)
+        private bool BoolGetOverride(string boolName, bool orig)
         {
             // Fake spell bools
             if (boolName == "hasVengefulSpirit")
@@ -496,7 +499,7 @@ namespace RandomizerMod
             {
                 // Iselda is now always unlocked
                 return true || PlayerData.instance.GetBoolInternal(boolName) ||
-                    (!RandomizerMod.Instance.Settings.RandomizeMaps &&
+                    (!Instance.Settings.RandomizeMaps &&
                     (
                     PlayerData.instance.GetBoolInternal(nameof(PlayerData.corn_cityLeft)) ||
                     PlayerData.instance.GetBoolInternal(nameof(PlayerData.corn_abyssLeft)) ||
@@ -520,14 +523,14 @@ namespace RandomizerMod
                 return Settings.CheckItemFound(boolName.Split('.')[2]);
             }
             
-            if (RandomizerMod.Instance.Settings.RandomizeRooms && (boolName == "troupeInTown" || boolName == "divineInTown")) return false;
+            if (Instance.Settings.RandomizeRooms && (boolName == "troupeInTown" || boolName == "divineInTown")) return false;
             //if (boolName == "crossroadsInfected" && RandomizerMod.Instance.Settings.RandomizeRooms
             //    && new List<string> { SceneNames.Crossroads_03, SceneNames.Crossroads_06, SceneNames.Crossroads_10, SceneNames.Crossroads_19 }.Contains(GameManager.instance.sceneName)) return false;
 
             return Ref.PD.GetBoolInternal(boolName);
         }
 
-        private void BoolSetOverride(string boolName, bool value)
+        private bool BoolSetOverride(string boolName, bool value)
         {
             PlayerData pd = Ref.PD;
 
@@ -591,7 +594,7 @@ namespace RandomizerMod
                 string location = pieces[3];
 
                 GiveItem(giveAction, item, location);
-                return;
+                return value;
             }
             // Send the set through to the actual set
             pd.SetBoolInternal(boolName, value);
@@ -677,12 +680,14 @@ namespace RandomizerMod
                     EnableFury();
                 }
             }
+
+            return value;
         }
 
         private static void EnableFury() { PlayMakerFSM.BroadcastEvent("ENABLE FURY"); }
         private static void DisableFury() { PlayMakerFSM.BroadcastEvent("DISABLE FURY"); }
 
-        private int IntOverride(string intName)
+        private int IntOverride(string intName, int orig)
         {
             if (intName == "RandomizerMod.Zero")
             {
@@ -792,7 +797,7 @@ namespace RandomizerMod
                 return;
             }
 
-            if (RandomizerMod.Instance.Settings.RandomizeTransitions)
+            if (Instance.Settings.RandomizeTransitions)
             {
                 TransitionPoint tp = Object.FindObjectsOfType<TransitionPoint>().FirstOrDefault(x => x.entryPoint == info.EntryGateName && x.targetScene == info.SceneName);
                 string transitionName = string.Empty;
@@ -820,7 +825,7 @@ namespace RandomizerMod
                 {
                     string name = tp.name.Split(null).First(); // some transitions have duplicates named left1 (1) and so on
 
-                    if (RandomizerMod.Instance.Settings.RandomizeRooms)
+                    if (Instance.Settings.RandomizeRooms)
                     {
                         // It's simplest to treat the three transitions connecting Mantis Lords and Mantis Village as one
                         if (self.sceneName == SceneNames.Fungus2_14 && name.StartsWith("bot")) name = "bot3";
@@ -840,17 +845,17 @@ namespace RandomizerMod
 
                     try
                     {
-                        if (!RandomizerMod.Instance.Settings.CheckTransitionFound(transitionName))
+                        if (!Instance.Settings.CheckTransitionFound(transitionName))
                         {
-                            RandomizerMod.Instance.Settings.MarkTransitionFound(transitionName);
-                            RandomizerMod.Instance.Settings.MarkTransitionFound(destination);
+                            Instance.Settings.MarkTransitionFound(transitionName);
+                            Instance.Settings.MarkTransitionFound(destination);
                             RandoLogger.LogTransitionToTracker(transitionName, destination);
                             // moved UpdateHelperLog to SceneEditor, so it accesses new scene name
                         }
                     }
                     catch (Exception e)
                     {
-                        RandomizerMod.Instance.LogError("Error in logging new transition: " + transitionName + "\n" + e);
+                        Instance.LogError("Error in logging new transition: " + transitionName + "\n" + e);
                     }
                     info.SceneName = LogicManager.GetTransitionDef(destination).sceneName.Split('-').First();
                     info.EntryGateName = LogicManager.GetTransitionDef(destination).doorName;

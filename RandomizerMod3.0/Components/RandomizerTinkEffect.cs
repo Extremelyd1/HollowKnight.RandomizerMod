@@ -1,5 +1,4 @@
-﻿using SereCore;
-using UnityEngine;
+﻿using UnityEngine;
 using Random = System.Random;
 
 namespace RandomizerMod.Components

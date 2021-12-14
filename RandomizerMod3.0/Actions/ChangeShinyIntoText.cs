@@ -1,9 +1,9 @@
 ﻿using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
+using RandomizerMod.Extensions;
 using RandomizerMod.FsmStateActions;
-using SereCore;
+using TMPro;
 using UnityEngine;
-using static RandomizerMod.LogHelper;
 
 namespace RandomizerMod.Actions
 {
@@ -183,7 +183,7 @@ namespace RandomizerMod.Actions
 
                 case TextType.Lore:
                 case TextType.MajorLore:
-                    textObj.GetComponent<TMPro.TextMeshPro>().alignment = TMPro.TextAlignmentOptions.Top;
+                    textObj.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Top;
                     break;
             }
 
@@ -212,7 +212,7 @@ namespace RandomizerMod.Actions
             GameObject dialogueManager = GameObject.Find("DialogueManager");
 
             GameObject textObj = dialogueManager.transform.Find("Text").gameObject;
-            textObj.GetComponent<TMPro.TextMeshPro>().alignment = TMPro.TextAlignmentOptions.TopLeft;
+            textObj.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.TopLeft;
             dialogueManager.transform.Find("Arrow").gameObject.transform.SetPositionY(1.695f);
             textObj.transform.SetPositionY(4.49f);
             dialogueManager.transform.Find("Stop").gameObject.transform.SetPositionY(1.695f);

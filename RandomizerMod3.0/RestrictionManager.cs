@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
-using SereCore;
+using RandomizerMod.Extensions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

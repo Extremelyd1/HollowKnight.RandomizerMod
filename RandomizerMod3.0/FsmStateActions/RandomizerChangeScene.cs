@@ -1,7 +1,6 @@
 ﻿using GlobalEnums;
 using HutongGames.PlayMaker;
 using Modding;
-using SereCore;
 
 namespace RandomizerMod.FsmStateActions
 {
@@ -35,7 +34,7 @@ namespace RandomizerMod.FsmStateActions
                 return;
             }
 
-            SceneLoad load = ReflectionHelper.GetAttr<GameManager, SceneLoad>(Ref.GM, "sceneLoad");
+            SceneLoad load = ReflectionHelper.GetField<GameManager, SceneLoad>(Ref.GM, "sceneLoad");
             if (load != null)
             {
                 load.Finish += () =>
@@ -52,7 +51,7 @@ namespace RandomizerMod.FsmStateActions
         private static void LoadScene(string sceneName, string gateName, float delay)
         {
             Ref.GM.StopAllCoroutines();
-            ReflectionHelper.SetAttr<GameManager, SceneLoad>(Ref.GM, "sceneLoad", null);
+            ReflectionHelper.SetField<GameManager, SceneLoad>(Ref.GM, "sceneLoad", null);
 
             Ref.GM.BeginSceneTransition(new GameManager.SceneLoadInfo
             {

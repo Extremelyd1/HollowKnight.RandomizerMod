@@ -1,13 +1,12 @@
-﻿using HutongGames.PlayMaker;
+﻿using System.Linq;
+using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 using RandomizerMod.Components;
+using RandomizerMod.Extensions;
 using RandomizerMod.FsmStateActions;
-using SereCore;
+using RandomizerMod.Randomization;
 using UnityEngine;
 using static RandomizerMod.GiveItemActions;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace RandomizerMod.Actions
 {
@@ -94,9 +93,9 @@ namespace RandomizerMod.Actions
             fsm.GetState("Trinket Type").ClearTransitions();
             trinkFlash.AddTransition("FINISHED", "Store Key");
             giveTrinket.RemoveActionsOfType<SetPlayerDataBool>();
-            giveTrinket.AddAction(new RandomizerExecuteLambda(() => GiveItem(GiveItemActions.GiveAction.AddGeo, _item, _location, 300)));
+            giveTrinket.AddAction(new RandomizerExecuteLambda(() => GiveItem(GiveAction.AddGeo, _item, _location, 300)));
             giveTrinket.GetActionsOfType<GetLanguageString>().First().convName = _itemDefs.Last().NameKey;
-            giveTrinket.GetActionsOfType<SetSpriteRendererSprite>().First().sprite = RandomizerMod.GetSprite(Randomization.LogicManager.GetItemDef(_itemDefs.Last().Name).shopSpriteKey);
+            giveTrinket.GetActionsOfType<SetSpriteRendererSprite>().First().sprite = RandomizerMod.GetSprite(LogicManager.GetItemDef(_itemDefs.Last().Name).shopSpriteKey);
 
             // Normal path for big items. Set bool and show the popup after the flash
             bigGetFlash.AddAction(new RandomizerCallStaticMethod(

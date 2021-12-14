@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Modding;
 using RandomizerMod.Randomization;
+using TMPro;
+using UnityEngine;
 using static RandomizerMod.RandoLogger;
 using static RandomizerMod.LogHelper;
-using UnityEngine;
+using Random = System.Random;
 
 namespace RandomizerMod
 {
@@ -64,7 +65,7 @@ namespace RandomizerMod
         private static void ShowItemPopup(string nameKey, string spriteName)
         {
             GameObject popup = ObjectCache.RelicGetMsg;
-            popup.transform.Find("Text").GetComponent<TMPro.TextMeshPro>().text = Language.Language.Get(nameKey, "UI");
+            popup.transform.Find("Text").GetComponent<TextMeshPro>().text = Language.Language.Get(nameKey, "UI");
             popup.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = RandomizerMod.GetSprite(spriteName);
             popup.SetActive(true);
         }
@@ -90,7 +91,7 @@ namespace RandomizerMod
 
             item = LogicManager.RemoveDuplicateSuffix(item);
 
-            if (RandomizerMod.Instance.globalSettings.RecentItems)
+            if (RandomizerMod.Instance._globalSettings.RecentItems)
             {
                 RecentItems.AddItem(item, location);
             }
@@ -198,7 +199,7 @@ namespace RandomizerMod
 
                 case GiveAction.Grub:
                     PlayerData.instance.grubsCollected++;
-                    int clipIndex = new System.Random().Next(2);
+                    int clipIndex = new Random().Next(2);
                     AudioSource.PlayClipAtPoint(ObjectCache.GrubCry[clipIndex],
                         new Vector3(
                             Camera.main.transform.position.x - 2,
@@ -476,7 +477,7 @@ namespace RandomizerMod
                 if (GameObject.Find("Vine") is GameObject vine)
                 {
                     VinePlatformCut vinecut = vine.GetComponent<VinePlatformCut>();
-                    bool activated = ReflectionHelper.GetAttr<VinePlatformCut, bool>(vinecut, "activated");
+                    bool activated = ReflectionHelper.GetField<VinePlatformCut, bool>(vinecut, "activated");
                     if (!activated) vinecut.Cut();
                 }
             }

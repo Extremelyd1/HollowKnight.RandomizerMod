@@ -1,9 +1,8 @@
-﻿using HutongGames.PlayMaker;
+﻿using System;
+using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
+using RandomizerMod.Extensions;
 using RandomizerMod.FsmStateActions;
-using SereCore;
-using UnityEngine;
-using System;
 using Object = UnityEngine.Object;
 
 namespace RandomizerMod.Actions

@@ -1,19 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using GlobalEnums;
-using HutongGames.PlayMaker;
+﻿using GlobalEnums;
 using HutongGames.PlayMaker.Actions;
 using Modding;
-using RandomizerMod.Components;
-using RandomizerMod.FsmStateActions;
-using SereCore;
+using RandomizerMod.Extensions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
-using static RandomizerMod.LogHelper;
-using System.Collections;
-using RandomizerMod.SceneChanges;
 
 namespace RandomizerMod.SceneChanges
 {
@@ -26,7 +17,7 @@ namespace RandomizerMod.SceneChanges
         {
             UnHook();
 
-            ModHooks.Instance.ObjectPoolSpawnHook += FixExplosionPogo;
+            ModHooks.ObjectPoolSpawnHook += FixExplosionPogo;
             On.EnemyHitEffectsArmoured.RecieveHitEffect += FalseKnightNoises;
             On.PlayMakerFSM.OnEnable += FsmSceneEdits;
             // ModHooks.Instance.OnEnableEnemyHook += BossRewardReplacement.ReplaceBossRewards;
@@ -36,7 +27,7 @@ namespace RandomizerMod.SceneChanges
 
         public static void UnHook()
         {
-            ModHooks.Instance.ObjectPoolSpawnHook -= FixExplosionPogo;
+            ModHooks.ObjectPoolSpawnHook -= FixExplosionPogo;
             On.EnemyHitEffectsArmoured.RecieveHitEffect -= FalseKnightNoises;
             On.PlayMakerFSM.OnEnable -= FsmSceneEdits;
             // ModHooks.Instance.OnEnableEnemyHook -= BossRewardReplacement.ReplaceBossRewards;

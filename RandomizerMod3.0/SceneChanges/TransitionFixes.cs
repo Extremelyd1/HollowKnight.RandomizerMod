@@ -1,18 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using GlobalEnums;
-using HutongGames.PlayMaker;
-using HutongGames.PlayMaker.Actions;
-using Modding;
-using RandomizerMod.Components;
+﻿using HutongGames.PlayMaker.Actions;
+using RandomizerMod.Extensions;
 using RandomizerMod.FsmStateActions;
-using SereCore;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Random = System.Random;
-using static RandomizerMod.LogHelper;
-using System.Collections;
 
 namespace RandomizerMod.SceneChanges
 {

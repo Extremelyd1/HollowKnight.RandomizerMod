@@ -4,7 +4,6 @@ using GlobalEnums;
 using Modding;
 using MonoMod.Utils;
 using RandomizerMod.Extensions;
-using SereCore;
 using UnityEngine;
 
 // ReSharper disable file UnusedMember.Global
@@ -34,7 +33,7 @@ namespace RandomizerMod.Components
         public void Awake()
         {
             // Stuff breaks really hard if we try to remain wall running after getting hit
-            ModHooks.Instance.TakeDamageHook += DamageTaken;
+            ModHooks.TakeDamageHook += DamageTaken;
 
             // Store box collider because it has the size of the wall
             _box = GetComponent<BoxCollider2D>();
@@ -61,7 +60,7 @@ namespace RandomizerMod.Components
         {
             // Unhook everything and fix the hero on unload
             On.HeroController.DoDoubleJump -= No;
-            ModHooks.Instance.TakeDamageHook -= DamageTaken;
+            ModHooks.TakeDamageHook -= DamageTaken;
 
             if (_wallRunning)
             {

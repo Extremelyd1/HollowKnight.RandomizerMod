@@ -1,19 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using GlobalEnums;
 using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
-using Modding;
 using RandomizerMod.Components;
+using RandomizerMod.Extensions;
 using RandomizerMod.FsmStateActions;
-using SereCore;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Random = System.Random;
-using static RandomizerMod.LogHelper;
-using System.Collections;
-using RandomizerMod.SceneChanges;
+using Object = UnityEngine.Object;
 
 namespace RandomizerMod.SceneChanges
 {
@@ -909,7 +905,7 @@ namespace RandomizerMod.SceneChanges
                         // We'll add this even if the player has the stag so there's no issue with the UI List FSM changing 
                         // its value (even though I'm pretty sure it doesn't matter)
                         FsmBool[] boolVariables = new FsmBool[fsm.FsmVariables.BoolVariables.Length + 1];
-                        System.Array.Copy(fsm.FsmVariables.BoolVariables, boolVariables, fsm.FsmVariables.BoolVariables.Length);
+                        Array.Copy(fsm.FsmVariables.BoolVariables, boolVariables, fsm.FsmVariables.BoolVariables.Length);
                         boolVariables[fsm.FsmVariables.BoolVariables.Length] = cancelTravel;
                         fsm.FsmVariables.BoolVariables = boolVariables;
 

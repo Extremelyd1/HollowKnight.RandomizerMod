@@ -1,7 +1,9 @@
-﻿using HutongGames.PlayMaker;
+﻿using System;
+using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
-using SereCore;
+using RandomizerMod.Extensions;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace RandomizerMod.Actions
 {
@@ -12,9 +14,9 @@ namespace RandomizerMod.Actions
         private readonly string _parent;
         private readonly float _x;
         private readonly float _y;
-        private readonly System.Func<bool> _activeCheck;    // If this returns true, set the shiny to be active at (x, y).
+        private readonly Func<bool> _activeCheck;    // If this returns true, set the shiny to be active at (x, y).
 
-        public CreateInactiveShiny(string sceneName, string parent, string newShinyName, float x, float y, System.Func<bool> activeCheck)
+        public CreateInactiveShiny(string sceneName, string parent, string newShinyName, float x, float y, Func<bool> activeCheck)
         {
             _sceneName = sceneName;
             _newShinyName = newShinyName;

@@ -1,35 +1,52 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using Modding;
+using System.Linq;
+using GlobalEnums;
 using RandomizerMod.Actions;
-using SereCore;
 using RandomizerMod.Randomization;
-using static RandomizerMod.LogHelper;
-using static RandomizerMod.Randomization.Randomizer;
 
 namespace RandomizerMod
 {
-    public class SaveSettings : BaseSettings
+    public class SaveSettings
     {
         /*
          * UNLISTED BOOLS
          * rescuedSly is used in room randomizer to control when Sly appears in the shop, separately from when the door is unlocked
          */
+        public Dictionary<string, bool> _bools = new Dictionary<string, bool>();
 
+        public bool GetBool(bool defaultValue, string name)
+        {
+            if (_bools.TryGetValue(name, out var value))
+            {
+                return value;
+            }
 
-        private SerializableStringDictionary _itemPlacements = new SerializableStringDictionary();
-        private SerializableIntDictionary _orderedLocations = new SerializableIntDictionary();
-        public SerializableStringDictionary _transitionPlacements = new SerializableStringDictionary();
-        private SerializableIntDictionary _variableCosts = new SerializableIntDictionary();
-        private SerializableIntDictionary _shopCosts = new SerializableIntDictionary();
-        private SerializableIntDictionary _additiveCounts = new SerializableIntDictionary();
+            return defaultValue;
+        }
+        
+        public bool GetBool(string name)
+        {
+            return GetBool(false, name);
+        }
 
-        private SerializableBoolDictionary _obtainedItems = new SerializableBoolDictionary();
-        private SerializableBoolDictionary _obtainedLocations = new SerializableBoolDictionary();
-        private SerializableBoolDictionary _obtainedTransitions = new SerializableBoolDictionary();
+        public void SetBool(bool value, string name)
+        {
+            _bools[name] = value;
+        }
 
-        public SerializableBoolDictionary _mimicPlacements = new SerializableBoolDictionary(); // Only for Mimic-but-not-Grub rando
+        public Dictionary<string, string> _itemPlacements = new Dictionary<string, string>();
+        public Dictionary<string, int> _orderedLocations = new Dictionary<string, int>();
+        public Dictionary<string, string> _transitionPlacements = new Dictionary<string, string>();
+        public Dictionary<string, int> _variableCosts = new Dictionary<string, int>();
+        public Dictionary<string, int> _shopCosts = new Dictionary<string, int>();
+        public Dictionary<string, int> _additiveCounts = new Dictionary<string, int>();
+        
+        public Dictionary<string, bool> _obtainedItems = new Dictionary<string, bool>();
+        public Dictionary<string, bool> _obtainedLocations = new Dictionary<string, bool>();
+        public Dictionary<string, bool> _obtainedTransitions = new Dictionary<string, bool>();
+        
+        public Dictionary<string, bool> _mimicPlacements = new Dictionary<string, bool>();
 
         /// <remarks>item, location</remarks>
         public (string, string)[] ItemPlacements => _itemPlacements.Select(pair => (pair.Key, pair.Value)).ToArray();
@@ -46,360 +63,101 @@ namespace RandomizerMod
 
         public bool FreeLantern => !(DarkRooms || RandomizeKeys);
 
-        // Used by mods who are loaded before and have a dependency relation with RandomizerMod
-        public delegate void PreAfterDeserializeFunc(SaveSettings settings);
-        public static event PreAfterDeserializeFunc PreAfterDeserialize
-        {
-            add => PreAfterDeserializeInternal += value;
-            remove => PreAfterDeserializeInternal -= value;
-        }
-        private static event PreAfterDeserializeFunc PreAfterDeserializeInternal;
+        public int JijiHintCounter { get; set; } = 0;
 
-        public SaveSettings()
-        {
-            AfterDeserialize += () =>
-            {
-                if (Randomizer)
-                {
-                    PreAfterDeserializeInternal?.Invoke(this);
+        public int QuirrerHintCounter { get; set; } = 0;
 
-                    RandomizerMod.Instance.HookRandomizer();
-                    RandomizerAction.CreateActions(ItemPlacements, this);
-                }
-            };
-        }
+        public bool AllBosses  { get; set; } = false;
 
-        public int JijiHintCounter
-        {
-            get => GetInt(0);
-            set => SetInt(value);
-        }
-        public int QuirrerHintCounter
-        {
-            get => GetInt(0);
-            set => SetInt(value);
-        }
+        public bool AllSkills  { get; set; } = false;
 
-        public bool AllBosses
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool AllCharms  { get; set; } = false;
 
-        public bool AllSkills
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool CharmNotch  { get; set; } = false;
 
-        public bool AllCharms
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool Grubfather  { get; set; } = false;
+        public bool Jiji  { get; set; } = false;
+        public bool JinnSellAll  { get; set; } = false;
+        public bool Quirrel  { get; set; } = false;
+        public bool ItemDepthHints  { get; set; } = false;
 
-        public bool CharmNotch
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool EarlyGeo  { get; set; } = false;
 
-        public bool Grubfather
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool Jiji
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool JinnSellAll
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool Quirrel
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool ItemDepthHints
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool NPCItemDialogue  { get; set; } = false;
 
-        public bool EarlyGeo
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool ExtraPlatforms  { get; set; } = false;
 
-        public bool NPCItemDialogue
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-
-        public bool ExtraPlatforms
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-
-        public bool Randomizer
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizeAreas
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizeRooms
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool ConnectAreas
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool SlyCharm
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizeDreamers
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizeSkills
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizeCharms
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizeKeys
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizeGeoChests
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizeJunkPitChests
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizeMaskShards
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizeVesselFragments
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizeCharmNotches
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizePaleOre
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizeRancidEggs
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool EggShop
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool Randomizer  { get; set; } = false;
+        public bool RandomizeAreas  { get; set; } = false;
+        public bool RandomizeRooms  { get; set; } = false;
+        public bool ConnectAreas  { get; set; } = false;
+        public bool SlyCharm  { get; set; } = false;
+        public bool RandomizeDreamers  { get; set; } = false;
+        public bool RandomizeSkills  { get; set; } = false;
+        public bool RandomizeCharms  { get; set; } = false;
+        public bool RandomizeKeys  { get; set; } = false;
+        public bool RandomizeGeoChests  { get; set; } = false;
+        public bool RandomizeJunkPitChests  { get; set; } = false;
+        public bool RandomizeMaskShards  { get; set; } = false;
+        public bool RandomizeVesselFragments  { get; set; } = false;
+        public bool RandomizeCharmNotches  { get; set; } = false;
+        public bool RandomizePaleOre  { get; set; } = false;
+        public bool RandomizeRancidEggs  { get; set; } = false;
+        public bool EggShop  { get; set; } = false;
         public int MaxEggCost => !EggShop ? 0 : VariableCosts
             .Where(pair => LogicManager.GetItemDef(pair.Item1).costType == AddYNDialogueToShiny.CostType.RancidEggs)
             .Select(pair => pair.Item2)
             .Max();
 
 
-        public bool RandomizeRelics
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeRelics  { get; set; } = false;
 
-        public bool RandomizeMaps
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeMaps  { get; set; } = false;
 
-        public bool RandomizeStags
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeStags  { get; set; } = false;
 
-        public bool RandomizeGrubs
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizeMimics
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeGrubs  { get; set; } = false;
+        public bool RandomizeMimics  { get; set; } = false;
 
-        public bool RandomizeWhisperingRoots
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeWhisperingRoots  { get; set; } = false;
         
-        public bool RandomizeRocks
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeRocks  { get; set; } = false;
 
-        public bool RandomizeBossGeo
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeBossGeo  { get; set; } = false;
         
-        public bool RandomizeSoulTotems
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeSoulTotems  { get; set; } = false;
 
-        public bool RandomizeLoreTablets
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizePalaceTotems
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizePalaceTablets
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizePalaceEntries
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeLoreTablets  { get; set; } = false;
+        public bool RandomizePalaceTotems  { get; set; } = false;
+        public bool RandomizePalaceTablets  { get; set; } = false;
+        public bool RandomizePalaceEntries  { get; set; } = false;
 
-        public bool RandomizeLifebloodCocoons
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeLifebloodCocoons  { get; set; } = false;
 
-        public bool RandomizeGrimmkinFlames
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public int TotalFlamesCollected
-        {
-            get => GetInt(0);
-            set => SetInt(value);
-        }
+        public bool RandomizeGrimmkinFlames  { get; set; } = false;
+        public int TotalFlamesCollected { get; set; } = 0;
 
-        public bool RandomizeBossEssence
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeBossEssence  { get; set; } = false;
 
-        public bool RandomizeJournalEntries
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeJournalEntries  { get; set; } = false;
 
-        public bool DuplicateMajorItems
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool DuplicateMajorItems  { get; set; } = false;
 
-        public bool RandomizeCloakPieces
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-        public bool RandomizeClawPieces
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeCloakPieces  { get; set; } = false;
+        public bool RandomizeClawPieces  { get; set; } = false;
 
-        public bool RandomizeNotchCosts
-        {
-            get => GetBool(true);
-            set => SetBool(value);
-        }
+        public bool RandomizeNotchCosts  { get; set; } = true;
 
-        public bool RandomizeFocus
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeFocus  { get; set; } = false;
 
-        public bool RandomizeSwim
-        {
-            get => GetBool(true);
-            set => SetBool(value);
-        }
-        public bool ElevatorPass
-        {
-            get => GetBool(true);
-            set => SetBool(value);
-        }
+        public bool RandomizeSwim  { get; set; } = true;
+        public bool ElevatorPass  { get; set; } = true;
 
-        public bool CursedNail
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool CursedNail  { get; set; } = false;
 
-        public bool CursedNotches
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool CursedNotches  { get; set; } = false;
 
-        public bool CursedMasks
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
-
+        public bool CursedMasks  { get; set; } = false;
 
         internal bool GetRandomizeByPool(string pool)
         {
@@ -482,122 +240,54 @@ namespace RandomizerMod
         }
 
 
-        public bool CreateSpoilerLog
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool CreateSpoilerLog  { get; set; } = false;
 
-        public bool Cursed
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool Cursed  { get; set; } = false;
 
-        public bool RandomizeStartItems
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeStartItems  { get; set; } = false;
 
-        public bool RandomizeStartLocation
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool RandomizeStartLocation  { get; set; } = false;
 
         // The following settings names are referenced in Benchwarp. Please do not change!
-        public string StartName
-        {
-            get => GetString("King's Pass");
-            set => SetString(value);
-        }
+        public string StartName  { get; set; } = "King's Pass";
 
-        public string StartSceneName
-        {
-            get => GetString("Tutorial_01");
-            set => SetString(value);
-        }
+        public string StartSceneName  { get; set; } = "Tutorial_01";
 
-        public string StartRespawnMarkerName
-        {
-            get => GetString("Randomizer Respawn Marker");
-            set => SetString(value);
-        }
+        public string StartRespawnMarkerName  { get; set; } = "Randomizer Respawn Marker";
 
-        public int StartRespawnType
-        {
-            get => GetInt(0);
-            set => SetInt(value);
-        }
+        public int StartRespawnType { get; set; } = 0;
 
-        public int StartMapZone
-        {
-            get => GetInt((int)GlobalEnums.MapZone.KINGS_PASS);
-            set => SetInt(value);
-        }
+        public int StartMapZone { get; set; } = (int)MapZone.KINGS_PASS;
         // End Benchwarp block.
 
-        public bool ShadeSkips
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool ShadeSkips  { get; set; } = false;
 
-        public bool AcidSkips
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool AcidSkips  { get; set; } = false;
 
-        public bool SpikeTunnels
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool SpikeTunnels  { get; set; } = false;
 
-        public bool MildSkips
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool MildSkips  { get; set; } = false;
 
-        public bool SpicySkips
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool SpicySkips  { get; set; } = false;
 
-        public bool FireballSkips
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool FireballSkips  { get; set; } = false;
 
-        public bool DarkRooms
-        {
-            get => GetBool(false);
-            set => SetBool(value);
-        }
+        public bool DarkRooms  { get; set; } = false;
 
-        public int Seed
-        {
-            get => GetInt(-1);
-            set => SetInt(value);
-        }
+        public int Seed { get; set; } = -1;
 
         public void ResetPlacements()
         {
-            _itemPlacements = new SerializableStringDictionary();
-            _orderedLocations = new SerializableIntDictionary();
-            _transitionPlacements = new SerializableStringDictionary();
-            _variableCosts = new SerializableIntDictionary();
-            _shopCosts = new SerializableIntDictionary();
-            _additiveCounts = new SerializableIntDictionary();
+            _itemPlacements = new Dictionary<string, string>();
+            _orderedLocations = new Dictionary<string, int>();
+            _transitionPlacements = new Dictionary<string, string>();
+            _variableCosts = new Dictionary<string, int>();
+            _shopCosts = new Dictionary<string, int>();
+            _additiveCounts = new Dictionary<string, int>();
 
-            _obtainedItems = new SerializableBoolDictionary();
-            _obtainedLocations = new SerializableBoolDictionary();
-            _obtainedTransitions = new SerializableBoolDictionary();
+            _obtainedItems = new Dictionary<string, bool>();
+            _obtainedLocations = new Dictionary<string, bool>();
+            _obtainedTransitions = new Dictionary<string, bool>();
         }
 
         public void AddItemPlacement(string item, string location)
@@ -801,30 +491,14 @@ namespace RandomizerMod
     }
 
 
-    public class GlobalSettings : BaseSettings
+    public class GlobalSettings
     {
-        public bool NPCItemDialogue
-        {
-            get => GetBool(true);
-            set => SetBool(value);
-        }
+        public bool NPCItemDialogue  { get; set; } = true;
 
-        public bool RecentItems
-        {
-            get => GetBool(true);
-            set => SetBool(value);
-        }
+        public bool RecentItems  { get; set; } = true;
 
-        public bool ReduceRockPreloads
-        {
-            get => GetBool(true);
-            set => SetBool(value);
-        }
+        public bool ReduceRockPreloads  { get; set; } = true;
 
-        public bool ReduceTotemPreloads
-        {
-            get => GetBool(true);
-            set => SetBool(value);
-        }
+        public bool ReduceTotemPreloads  { get; set; } = true;
     }
 }

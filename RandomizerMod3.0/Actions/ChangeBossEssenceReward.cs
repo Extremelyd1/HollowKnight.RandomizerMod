@@ -1,10 +1,9 @@
-﻿using System.Reflection;
+﻿using System;
 using HutongGames.PlayMaker;
-using HutongGames.PlayMaker.Actions;
+using RandomizerMod.Extensions;
 using RandomizerMod.FsmStateActions;
-using SereCore;
-using UnityEngine;
 using static RandomizerMod.GiveItemActions;
+using Object = UnityEngine.Object;
 
 namespace RandomizerMod.Actions
 {
@@ -74,7 +73,7 @@ namespace RandomizerMod.Actions
         private static void RemoveLastActions(FsmState s, int n)
         {
             var newActions = new FsmStateAction[s.Actions.Length - n];
-            System.Array.Copy(s.Actions, newActions, newActions.Length);
+            Array.Copy(s.Actions, newActions, newActions.Length);
             s.Actions = newActions;
         }
     }

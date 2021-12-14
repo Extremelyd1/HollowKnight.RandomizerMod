@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SereCore;
-using HutongGames.PlayMaker.Actions;
+﻿using HutongGames.PlayMaker.Actions;
+using RandomizerMod.Extensions;
+using UnityEngine;
 
 namespace RandomizerMod.Actions
 {
@@ -22,7 +19,7 @@ namespace RandomizerMod.Actions
 
         public override ActionType Type => ActionType.PlayMakerFSM;
 
-        public override void Process(string scene, UnityEngine.Object changeObj)
+        public override void Process(string scene, Object changeObj)
         {
             if (scene != _sceneName || !(changeObj is PlayMakerFSM fsm) || fsm.FsmName != _fsmName ||
                 fsm.gameObject.name != _objectName)

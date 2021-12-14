@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
-using System.Linq;
-using SereCore;
-using Language;
-using static RandomizerMod.LogHelper;
 using RandomizerMod.Randomization;
+using static RandomizerMod.LogHelper;
 
 namespace RandomizerMod
 {
@@ -82,7 +80,7 @@ namespace RandomizerMod
             return Language.Language.Get(item.nameKey, "UI");
         }
 
-        public static string GetLanguageString(string key, string sheetTitle)
+        public static string GetLanguageString(string key, string sheetTitle, string orig)
         {
             if (sheetTitle == "Jiji" && key == "HIVE" && RandomizerMod.Instance.Settings.Jiji)
             {

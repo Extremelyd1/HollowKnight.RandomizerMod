@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
+using HutongGames.PlayMaker.Actions;
 using Modding;
+using RandomizerMod.Extensions;
 using UnityEngine;
 using static RandomizerMod.LogHelper;
-using SereCore;
-using HutongGames.PlayMaker;
-using HutongGames.PlayMaker.Actions;
 
 namespace RandomizerMod
 {
@@ -107,11 +106,11 @@ namespace RandomizerMod
 
             HealthManager health = objectsByScene[SceneNames.Tutorial_01]["_Enemies/Crawler 1"].GetComponent<HealthManager>();
             _smallGeo = Object.Instantiate(
-                ReflectionHelper.GetAttr<HealthManager, GameObject>(health, "smallGeoPrefab"));
+                ReflectionHelper.GetField<HealthManager, GameObject>(health, "smallGeoPrefab"));
             _mediumGeo =
-                Object.Instantiate(ReflectionHelper.GetAttr<HealthManager, GameObject>(health, "mediumGeoPrefab"));
+                Object.Instantiate(ReflectionHelper.GetField<HealthManager, GameObject>(health, "mediumGeoPrefab"));
             _largeGeo = Object.Instantiate(
-                ReflectionHelper.GetAttr<HealthManager, GameObject>(health, "largeGeoPrefab"));
+                ReflectionHelper.GetField<HealthManager, GameObject>(health, "largeGeoPrefab"));
 
             _smallGeo.SetActive(false);
             _mediumGeo.SetActive(false);
@@ -144,10 +143,10 @@ namespace RandomizerMod
             Object.DontDestroyOnLoad(_mimicBottle);
             _mimicTop = objectsByScene[SceneNames.Deepnest_36]["Grub Mimic Top"];
             Object.DontDestroyOnLoad(_mimicTop);
-            _mimicDialogue = objectsByScene[SceneNames.Deepnest_36]["Dream Dialogue"];
+            _mimicDialogue = objectsByScene[SceneNames.Deepnest_36]["Grub Bottle/Bottle Physical/Dream Dialogue"];
             Object.DontDestroyOnLoad(_mimicDialogue);
 
-            if (RandomizerMod.Instance.globalSettings.ReduceRockPreloads)
+            if (RandomizerMod.Instance._globalSettings.ReduceRockPreloads)
             {
                 _geoRocks = new Dictionary<GeoRockSubtype, GameObject>() {
                     [GeoRockSubtype.Default] = objectsByScene[SceneNames.Tutorial_01]["_Props/Geo Rock 1"],
@@ -174,7 +173,7 @@ namespace RandomizerMod
                 
             }
 
-            if (RandomizerMod.Instance.globalSettings.ReduceTotemPreloads)
+            if (RandomizerMod.Instance._globalSettings.ReduceTotemPreloads)
             {
                 _soulTotems = new Dictionary<SoulTotemSubtype, GameObject>() {
                     [SoulTotemSubtype.B] = objectsByScene[SceneNames.Deepnest_East_17]["Soul Totem mini_two_horned"]

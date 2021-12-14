@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using static RandomizerMod.LogHelper;
 
 namespace RandomizerMod.Randomization

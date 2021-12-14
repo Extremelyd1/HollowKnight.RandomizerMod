@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
-using SereCore;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using RandomizerMod.Extensions;
 using RandomizerMod.FsmStateActions;
+using UnityEngine;
 using static RandomizerMod.GiveItemActions;
 
 namespace RandomizerMod.Actions

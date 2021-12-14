@@ -1,11 +1,11 @@
-﻿using HutongGames.PlayMaker;
+﻿using System.Linq;
+using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
+using RandomizerMod.Extensions;
 using RandomizerMod.FsmStateActions;
-using SereCore;
-using UnityEngine;
 using RandomizerMod.Randomization;
-using static RandomizerMod.LogHelper;
-using System.Linq;
+using TMPro;
+using UnityEngine;
 
 namespace RandomizerMod.Actions
 {
@@ -69,10 +69,10 @@ namespace RandomizerMod.Actions
                 ReqDef loredef = LogicManager.GetItemDef(fsm.FsmVariables.StringVariables.First(v => v.Name == "PD Bool Name").Value.Split('.')[2]);
                 string key = loredef.loreKey;
                 string sheet = string.IsNullOrEmpty(loredef.loreSheet) ? "Lore Tablets" : loredef.loreSheet;
-                TMPro.TextAlignmentOptions align = loredef.textType == ChangeShinyIntoText.TextType.LeftLore
-                    ? TMPro.TextAlignmentOptions.TopLeft : TMPro.TextAlignmentOptions.Top;
+                TextAlignmentOptions align = loredef.textType == ChangeShinyIntoText.TextType.LeftLore
+                    ? TextAlignmentOptions.TopLeft : TextAlignmentOptions.Top;
 
-                textObj.GetComponent<TMPro.TextMeshPro>().alignment = align;
+                textObj.GetComponent<TextMeshPro>().alignment = align;
                 textObj.GetComponent<DialogueBox>().StartConversation(key, sheet);
             }));
 
@@ -89,7 +89,7 @@ namespace RandomizerMod.Actions
                 GameObject dialogueManager = GameObject.Find("DialogueManager");
                 GameObject textObj = dialogueManager.transform.Find("Text").gameObject;
                 dialogueManager.LocateMyFSM("Box Open").SendEvent("BOX DOWN");
-                textObj.GetComponent<TMPro.TextMeshPro>().alignment = TMPro.TextAlignmentOptions.TopLeft;
+                textObj.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.TopLeft;
             }));
             // Add a useless wait here; this is basically just to give the dialogue box time to disappear before returning the shop menu.
             // The time value isn't a special number; I just found that it seemed to work well.

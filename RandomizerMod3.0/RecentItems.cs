@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Modding;
 using RandomizerMod.Randomization;
 using UnityEngine;
@@ -88,7 +88,7 @@ namespace RandomizerMod
         public static void Show()
         {
             if (canvas == null) return;
-            canvas.SetActive(RandomizerMod.Instance.globalSettings.RecentItems);
+            canvas.SetActive(RandomizerMod.Instance._globalSettings.RecentItems);
         }
 
         public static void Hide()

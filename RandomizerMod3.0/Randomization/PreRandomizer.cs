@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using RandomizerMod.Actions;
 using static RandomizerMod.LogHelper;
 using static RandomizerMod.Randomization.Randomizer;
 
@@ -20,7 +19,7 @@ namespace RandomizerMod.Randomization
                     continue; //Skip cost rando if this item's pool is vanilla
                 }
 
-                if (def.costType == Actions.AddYNDialogueToShiny.CostType.Essence) //essence cost
+                if (def.costType == AddYNDialogueToShiny.CostType.Essence) //essence cost
                 {
                     int cost = 1 + rand.Next(MAX_ESSENCE_COST);
 
@@ -30,7 +29,7 @@ namespace RandomizerMod.Randomization
                     continue;
                 }
 
-                if (def.costType == Actions.AddYNDialogueToShiny.CostType.Grub) //grub cost
+                if (def.costType == AddYNDialogueToShiny.CostType.Grub) //grub cost
                 {
                     int cost = 1 + rand.Next(MAX_GRUB_COST);
 
@@ -40,7 +39,7 @@ namespace RandomizerMod.Randomization
                     continue;
                 }
 
-                if (def.costType == Actions.AddYNDialogueToShiny.CostType.RancidEggs) //eggu cost
+                if (def.costType == AddYNDialogueToShiny.CostType.RancidEggs) //eggu cost
                 {
                     int cost = MIN_EGG_COST + rand.Next(MAX_EGG_COST - MIN_EGG_COST + 1);
 

@@ -1,14 +1,14 @@
 ﻿using System;
-using System.IO;
-using System.Text;
-using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading;
-using JetBrains.Annotations;
-using UnityEngine;
-using Modding;
+using RandomizerMod.Actions;
 using RandomizerMod.Randomization;
+using UnityEngine;
+using Random = System.Random;
 
 namespace RandomizerMod
 {
@@ -74,15 +74,15 @@ namespace RandomizerMod
 
                 if (!LogicManager.ShopNames.Contains(location))
                 {
-                    if (LogicManager.GetItemDef(location).costType == Actions.AddYNDialogueToShiny.CostType.Essence)
+                    if (LogicManager.GetItemDef(location).costType == AddYNDialogueToShiny.CostType.Essence)
                     {
                         altLocation = "Seer";
                     }
-                    else if (LogicManager.GetItemDef(location).costType == Actions.AddYNDialogueToShiny.CostType.Grub)
+                    else if (LogicManager.GetItemDef(location).costType == AddYNDialogueToShiny.CostType.Grub)
                     {
                         altLocation = "Grubfather";
                     }
-                    else if (LogicManager.GetItemDef(location).costType == Actions.AddYNDialogueToShiny.CostType.RancidEggs)
+                    else if (LogicManager.GetItemDef(location).costType == AddYNDialogueToShiny.CostType.RancidEggs)
                     {
                         altLocation = "Jiji";
                     }
@@ -328,7 +328,7 @@ namespace RandomizerMod
             // don't spoil duplicate items!
             if (LogicManager.GetItemDef(item).majorItem && RandomizerMod.Instance.Settings.DuplicateMajorItems)
             {
-                item = LogicManager.RemoveDuplicateSuffix(item) + $"({new System.Random().Next(10)}?)";
+                item = LogicManager.RemoveDuplicateSuffix(item) + $"({new Random().Next(10)}?)";
             }
 
             string message = $"ITEM --- {{{item}}} at {{{location}}}";
@@ -454,9 +454,9 @@ namespace RandomizerMod
             AddToLog($"Randomized notch costs: {RandomizerMod.Instance.Settings.RandomizeNotchCosts}");
             AddToLog("QUALITY OF LIFE");
             AddToLog($"Salubra: {RandomizerMod.Instance.Settings.CharmNotch}");
-            AddToLog($"Reduced Rock Preloads: {RandomizerMod.Instance.globalSettings.ReduceRockPreloads}");
-            AddToLog($"Reduced Totem Preloads: {RandomizerMod.Instance.globalSettings.ReduceTotemPreloads}");
-            AddToLog($"Recent Items: {RandomizerMod.Instance.globalSettings.RecentItems}");
+            AddToLog($"Reduced Rock Preloads: {RandomizerMod.Instance._globalSettings.ReduceRockPreloads}");
+            AddToLog($"Reduced Totem Preloads: {RandomizerMod.Instance._globalSettings.ReduceTotemPreloads}");
+            AddToLog($"Recent Items: {RandomizerMod.Instance._globalSettings.RecentItems}");
             AddToLog($"Early geo: {RandomizerMod.Instance.Settings.EarlyGeo}");
             AddToLog($"Extra platforms: {RandomizerMod.Instance.Settings.ExtraPlatforms}");
             AddToLog($"NPC item dialogue: {RandomizerMod.Instance.Settings.NPCItemDialogue}");

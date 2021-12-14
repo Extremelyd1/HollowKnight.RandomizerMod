@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using RandomizerMod.Randomization;
-using SereCore;
 using UnityEngine;
 using static RandomizerMod.LogHelper;
 using static RandomizerMod.GiveItemActions;
@@ -722,7 +721,7 @@ namespace RandomizerMod.Actions
         public static void Hook()
         {
             UnHook();
-
+            
             On.PlayMakerFSM.OnEnable += ProcessFSM;
             On.HealthManager.Die += OnEnemyDeath;
         }

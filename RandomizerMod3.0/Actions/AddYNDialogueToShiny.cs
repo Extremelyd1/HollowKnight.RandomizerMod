@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System;
+using System.Collections;
 using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
-using Modding;
-using UnityEngine.SceneManagement;
-using RandomizerMod.Extensions;
 using RandomizerMod.FsmStateActions;
-using SereCore;
 using UnityEngine;
 using static RandomizerMod.LogHelper;
+using Object = UnityEngine.Object;
+using RandomizerMod.Extensions;
 
 namespace RandomizerMod.Actions
 {
@@ -64,7 +62,7 @@ namespace RandomizerMod.Actions
 
             if (_type == CostType.RancidEggs)
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
 
             FsmState noState = new FsmState(fsm.GetState("Idle"))

@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-using HutongGames.PlayMaker;
-using HutongGames.PlayMaker.Actions;
-using RandomizerMod.FsmStateActions;
-using SereCore;
-using static RandomizerMod.GiveItemActions;
+﻿using HutongGames.PlayMaker;
+using RandomizerMod.Extensions;
+using UnityEngine;
 
 namespace RandomizerMod.Actions
 {

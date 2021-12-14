@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HutongGames.PlayMaker;
+﻿using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
-using SereCore;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using RandomizerMod.Extensions;
 using RandomizerMod.FsmStateActions;
 using RandomizerMod.Randomization;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RandomizerMod.SceneChanges
 {
@@ -164,7 +160,7 @@ namespace RandomizerMod.SceneChanges
             // Destroy Jinn if Jiji isn't bought out
             if (RandomizerMod.Instance.Settings.MaxEggCost > Ref.PD.jinnEggsSold)
             {
-                UnityEngine.Object.Destroy(Jinn);
+                Object.Destroy(Jinn);
             }
             else
             {

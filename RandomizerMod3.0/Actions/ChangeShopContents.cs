@@ -1,11 +1,6 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
-using HutongGames.PlayMaker;
-using HutongGames.PlayMaker.Actions;
-using RandomizerMod.Extensions;
-using RandomizerMod.FsmStateActions;
-using static RandomizerMod.LogHelper;
 using RandomizerMod.Randomization;
+using UnityEngine;
 
 namespace RandomizerMod.Actions
 {

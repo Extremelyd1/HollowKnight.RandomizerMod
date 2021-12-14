@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Modding;
+﻿using Modding;
 using UnityEngine;
-using SereCore;
 using HutongGames.PlayMaker.Actions;
 using HutongGames.PlayMaker;
 using GlobalEnums;
+using RandomizerMod.Extensions;
 
 namespace RandomizerMod
 {
@@ -16,8 +12,8 @@ namespace RandomizerMod
         public static void Hook()
         {
             UnHook();
-            ModHooks.Instance.GetPlayerBoolHook += SkillBoolGetOverride;
-            ModHooks.Instance.SetPlayerBoolHook += SkillBoolSetOverride;
+            ModHooks.GetPlayerBoolHook += SkillBoolGetOverride;
+            ModHooks.SetPlayerBoolHook += SkillBoolSetOverride;
             On.PlayMakerFSM.OnEnable += ShowSkillsInInventory;
             On.PlayMakerFSM.OnEnable += DisableSwim;
             On.HeroController.CanFocus += DisableFocus;
@@ -27,8 +23,8 @@ namespace RandomizerMod
 
         public static void UnHook()
         {
-            ModHooks.Instance.GetPlayerBoolHook -= SkillBoolGetOverride;
-            ModHooks.Instance.SetPlayerBoolHook -= SkillBoolSetOverride;
+            ModHooks.GetPlayerBoolHook -= SkillBoolGetOverride;
+            ModHooks.SetPlayerBoolHook -= SkillBoolSetOverride;
             On.PlayMakerFSM.OnEnable -= ShowSkillsInInventory;
             On.PlayMakerFSM.OnEnable -= DisableSwim;
             On.HeroController.CanFocus -= DisableFocus;
@@ -37,7 +33,7 @@ namespace RandomizerMod
         }
 
 
-        private static bool SkillBoolGetOverride(string boolName)
+        private static bool SkillBoolGetOverride(string boolName, bool orig)
         {
             // bools for left and right cloak
             // canDash: Override here so they always have dash with exactly one direction, and disable it separately in the 
@@ -92,7 +88,7 @@ namespace RandomizerMod
             return Ref.PD.GetBoolInternal(boolName);
         }
 
-        private static void SkillBoolSetOverride(string boolName, bool value)
+        private static bool SkillBoolSetOverride(string boolName, bool value)
         {
             // bools for left and right cloak
             if (boolName == "canDashLeft" || boolName == "canDashRight")
@@ -133,7 +129,7 @@ namespace RandomizerMod
                 }
             }
             // Send the set through to the actual set
-            Ref.PD.SetBoolInternal(boolName, value);
+            return value;
         }
 
         private static void ShowSkillsInInventory(On.PlayMakerFSM.orig_OnEnable orig, PlayMakerFSM self)

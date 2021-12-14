@@ -1,13 +1,11 @@
 ﻿using RandomizerMod.Extensions;
-using SereCore;
+using RandomizerMod.MultiWorld;
+using RandomizerMod.Randomization;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static RandomizerMod.LogHelper;
-using Object = UnityEngine.Object;
 using Random = System.Random;
-using RandomizerMod.Randomization;
-using RandomizerMod.MultiWorld;
 
 namespace RandomizerMod
 {
@@ -150,20 +148,20 @@ namespace RandomizerMod
             y -= vspace;
             */
             RandoMenuItem<bool> rockPreloadsBtn = new RandoMenuItem<bool>(back, new Vector2(-900, y), "Reduce Rock Preloads", true, false);
-            rockPreloadsBtn.SetSelection(RandomizerMod.Instance.globalSettings.ReduceRockPreloads);
+            rockPreloadsBtn.SetSelection(RandomizerMod.Instance._globalSettings.ReduceRockPreloads);
             y -= vspace;
             RandoMenuItem<bool> totemPreloadsBtn = new RandoMenuItem<bool>(back, new Vector2(-900, y), "Reduce Totem Preloads", true, false);
-            totemPreloadsBtn.SetSelection(RandomizerMod.Instance.globalSettings.ReduceTotemPreloads);
+            totemPreloadsBtn.SetSelection(RandomizerMod.Instance._globalSettings.ReduceTotemPreloads);
             y -= vspace;
             RandoMenuItem<bool> EarlyGeoBtn = new RandoMenuItem<bool>(back, new Vector2(-900, y), "Early Geo", true, false);
             y -= vspace;
             RandoMenuItem<bool> softlockBtn = new RandoMenuItem<bool>(back, new Vector2(-900, y), "Extra Platforms", true, false);
             y -= vspace;
             RandoMenuItem<bool> recentItemsBtn = new RandoMenuItem<bool>(back, new Vector2(-900, y), "Show Recent Items", true, false);
-            recentItemsBtn.SetSelection(RandomizerMod.Instance.globalSettings.RecentItems);
+            recentItemsBtn.SetSelection(RandomizerMod.Instance._globalSettings.RecentItems);
             y -= vspace;
             RandoMenuItem<bool> npcBtn = new RandoMenuItem<bool>(back, new Vector2(-900, y), "NPC Item Dialogue", true, false);
-            npcBtn.SetSelection(RandomizerMod.Instance.globalSettings.NPCItemDialogue);
+            npcBtn.SetSelection(RandomizerMod.Instance._globalSettings.NPCItemDialogue);
             /*
             y -= vspace;
             RandoMenuItem<bool> jijiBtn = new RandoMenuItem<bool>(back, new Vector2(-900, y), "Jiji Hints", false, true);
@@ -572,21 +570,21 @@ namespace RandomizerMod
 
             void RecentItemsSettingChanged(RandoMenuItem<bool> item)
             {
-                RandomizerMod.Instance.globalSettings.RecentItems = recentItemsBtn.CurrentSelection;
+                RandomizerMod.Instance._globalSettings.RecentItems = recentItemsBtn.CurrentSelection;
             }
             void NPCSettingChanged(RandoMenuItem<bool> item)
             {
-                RandomizerMod.Instance.globalSettings.NPCItemDialogue = npcBtn.CurrentSelection;
+                RandomizerMod.Instance._globalSettings.NPCItemDialogue = npcBtn.CurrentSelection;
             }
 
             void RockPreloadsSettingChanged(RandoMenuItem<bool> item)
             {
-                RandomizerMod.Instance.globalSettings.ReduceRockPreloads = rockPreloadsBtn.CurrentSelection;
+                RandomizerMod.Instance._globalSettings.ReduceRockPreloads = rockPreloadsBtn.CurrentSelection;
             }
 
             void TotemPreloadsSettingChanged(RandoMenuItem<bool> item)
             {
-                RandomizerMod.Instance.globalSettings.ReduceTotemPreloads = totemPreloadsBtn.CurrentSelection;
+                RandomizerMod.Instance._globalSettings.ReduceTotemPreloads = totemPreloadsBtn.CurrentSelection;
             }
 
             modeBtn.Changed += s => HandleProgressionLock();
