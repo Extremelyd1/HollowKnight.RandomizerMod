@@ -43,6 +43,12 @@ namespace RandomizerMod
         public void OnLoadLocal(SaveSettings saveSettings)
         {
             Settings = saveSettings;
+
+            if (saveSettings.Randomizer)
+            {
+                HookRandomizer();
+                RandomizerAction.CreateActions(saveSettings.ItemPlacements, saveSettings);
+            }
         }
 
         public SaveSettings OnSaveLocal()
