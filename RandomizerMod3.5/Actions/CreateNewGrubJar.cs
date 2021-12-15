@@ -66,7 +66,14 @@ namespace RandomizerMod.Actions
                 // When grubs aren't randomized, simply use the scene data to decide whether to break the grub jar
                 FsmState init = fsm.GetState("Init");
                 init.RemoveActionsOfType<BoolTest>();
-                init.AddFirstAction(new RandomizerExecuteLambda(() => fsm.SendEvent(RandomizerMod.Instance.Settings.CheckLocationFound(location) ? "ACTIVATE" : null)));
+                init.AddFirstAction(new RandomizerExecuteLambda(() =>
+                {
+                    if (RandomizerMod.Instance.Settings.CheckLocationFound(location))
+                    {
+                        fsm.SendEvent("ACTIVATE");
+                        Object.DestroyImmediate(jar.transform.Find("Grub").gameObject);
+                    }
+                }));
 
                 // The bottle FSM already takes care of granting the grub and playing happy grub noises
                 // We have to add the GiveItem action before incrementing the grub count so the RecentItems
