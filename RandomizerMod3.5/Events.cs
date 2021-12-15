@@ -37,7 +37,7 @@ namespace RandomizerMod
         
             try 
             {
-                Type.GetType("RandomizerMod.Events, RandomizerMod3.0")
+                Type.GetType("RandomizerMod.Events, RandomizerMod3.5")
                     .GetEvent("OnTrackerLog", BindingFlags.Public | BindingFlags.Static)
                     .AddEventHandler(null, (Action<string>)OnTrackerLog);
             } 
