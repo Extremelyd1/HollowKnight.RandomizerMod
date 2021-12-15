@@ -533,7 +533,7 @@ namespace RandomizerMod
             //if (boolName == "crossroadsInfected" && RandomizerMod.Instance.Settings.RandomizeRooms
             //    && new List<string> { SceneNames.Crossroads_03, SceneNames.Crossroads_06, SceneNames.Crossroads_10, SceneNames.Crossroads_19 }.Contains(GameManager.instance.sceneName)) return false;
 
-            return Ref.PD.GetBoolInternal(boolName);
+            return orig;
         }
 
         private bool BoolSetOverride(string boolName, bool value)

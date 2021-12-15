@@ -85,7 +85,7 @@ namespace RandomizerMod
                     || PlayerData.instance.GetBoolInternal("hasWalljump");
             }
 
-            return Ref.PD.GetBoolInternal(boolName);
+            return orig;
         }
 
         private static bool SkillBoolSetOverride(string boolName, bool value)
