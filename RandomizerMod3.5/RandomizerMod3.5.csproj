@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="LocalBuildProperties.props"/>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,8 +13,6 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <ManagedDirectory>D:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\</ManagedDirectory>
-    <HollowKnightModsDirectory>$(ManagedDirectory)Mods</HollowKnightModsDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,28 +32,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-<!--    <Reference Include="SereCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">-->
-<!--      <SpecificVersion>False</SpecificVersion>-->
-<!--      <HintPath>$(Lib)\Mods\SereCore.dll</HintPath>-->
-<!--    </Reference>-->
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)Assembly-CSharp.dll</HintPath>
+      <HintPath>$(References)\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MMHOOK_Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)MMHOOK_Assembly-CSharp.dll</HintPath>
+      <HintPath>$(References)\MMHOOK_Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MMHOOK_PlayMaker, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)MMHOOK_PlayMaker.dll</HintPath>
+      <HintPath>$(References)\MMHOOK_PlayMaker.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MonoMod.Utils, Version=21.4.29.1, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)MonoMod.Utils.dll</HintPath>
+      <HintPath>$(References)\MonoMod.Utils.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PlayMaker, Version=1.6.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)PlayMaker.dll</HintPath>
+      <HintPath>$(References)\PlayMaker.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -64,47 +59,47 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)UnityEngine.dll</HintPath>
+      <HintPath>$(References)\UnityEngine.dll</HintPath>
         <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>$(References)\UnityEngine.AnimationModule.dll</HintPath>
         <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>$(References)\UnityEngine.AudioModule.dll</HintPath>
         <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(References)\UnityEngine.CoreModule.dll</HintPath>
         <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>$(References)\UnityEngine.ImageConversionModule.dll</HintPath>
         <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.JSONSerializeModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)UnityEngine.JSONSerializeModule.dll</HintPath>
+      <HintPath>$(References)\UnityEngine.JSONSerializeModule.dll</HintPath>
         <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)UnityEngine.ParticleSystemModule.dll</HintPath>
+      <HintPath>$(References)\UnityEngine.ParticleSystemModule.dll</HintPath>
         <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.Physics2DModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)UnityEngine.Physics2DModule.dll</HintPath>
+      <HintPath>$(References)\UnityEngine.Physics2DModule.dll</HintPath>
         <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>$(References)\UnityEngine.TextRenderingModule.dll</HintPath>
         <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)UnityEngine.UI.dll</HintPath>
+      <HintPath>$(References)\UnityEngine.UI.dll</HintPath>
         <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(ManagedDirectory)UnityEngine.UIModule.dll</HintPath>
+      <HintPath>$(References)\UnityEngine.UIModule.dll</HintPath>
         <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -492,8 +487,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\ShopIcons\LampBug.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="LocalBuildProperties.props" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(HollowKnightModsDirectory)\$(AssemblyName)"/>
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(OutputDirectory)\$(AssemblyName)" />
   </Target>
 </Project>
