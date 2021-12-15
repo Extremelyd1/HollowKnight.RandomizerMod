@@ -169,6 +169,13 @@ namespace RandomizerMod.Extensions
             origStates.CopyTo(states, 0);
             states[origStates.Length] = state;
             fsm.Fsm.States = states;
+            // fix fsm transitions
+            foreach(var s in fsm.Fsm.States){
+                foreach(var t in s.Transitions){
+                    t.ToFsmState = s.Fsm.GetState(t.ToState);
+                }
+            }
+            //
             return states[origStates.Length];
         }
 
