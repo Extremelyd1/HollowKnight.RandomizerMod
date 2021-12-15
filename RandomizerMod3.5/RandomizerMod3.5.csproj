@@ -488,6 +488,7 @@
     <EmbeddedResource Include="Resources\ShopIcons\LampBug.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="LocalBuildProperties.props" />
     <Content Include="LocalBuildProperties_example.props" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
