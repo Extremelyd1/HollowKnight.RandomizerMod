@@ -345,7 +345,7 @@ namespace RandomizerMod
 
         public override string GetVersion()
         {
-            string ver = "3.13";
+            string ver = "3.5.0";
 
             ver += $"({Math.Abs(MakeAssemblyHash() % 997)})";
 
