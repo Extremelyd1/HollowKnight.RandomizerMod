@@ -1,5 +1,8 @@
-# Randomizer 3
+# Randomizer 3.5
 
+Randomizer 3.5 is a quick port of the Randomizer 3 mod for Hollow Knight 1.5.
+
+# Randomizer 3
 Randomizer 3 expands on previous versions of the Hollow Knight randomizer by allowing you to randomize more items than ever before and, for the first time, to randomize area or room transitions.
 
 - Randomizer 3 requires SereCore.dll and Modding Api version 53 or greater to run. These are both automatically downloaded by the ModInstaller.
