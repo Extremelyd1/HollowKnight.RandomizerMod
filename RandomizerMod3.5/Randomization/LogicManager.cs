@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -1215,7 +1216,12 @@ namespace RandomizerMod.Randomization
                     }
                     else if (field.FieldType == typeof(float))
                     {
-                        if (float.TryParse(fieldNode.InnerText, out float xmlFloat))
+                        if (float.TryParse(
+                                fieldNode.InnerText, 
+                                NumberStyles.Float | NumberStyles.AllowThousands, 
+                                CultureInfo.CreateSpecificCulture("en"), 
+                                out float xmlFloat
+                        ))
                         {
                             field.SetValue(def, xmlFloat);
                         }
@@ -1385,7 +1391,12 @@ namespace RandomizerMod.Randomization
 
                     else if (field.FieldType == typeof(float))
                     {
-                        if (float.TryParse(fieldNode.InnerText, out float xmlFloat))
+                        if (float.TryParse(
+                                fieldNode.InnerText, 
+                                NumberStyles.Float | NumberStyles.AllowThousands, 
+                                CultureInfo.CreateSpecificCulture("en"), 
+                                out float xmlFloat
+                        ))
                         {
                             field.SetValue(def, xmlFloat);
                         }
